@@ -3,6 +3,24 @@ Redmine base_rspec plugin
 
 Allows using RSpec as a testing tool instead of plain Test::Unit
 
+Note that this plugin mainly targets developers of Redmine plugins. If you
+are not a Redmine plugin developer, chances are you are not at the right
+place!
+
+Usage
+-----
+
+Having the plugin installed in your `plugins/` directory is sufficient.
+
+As of today the plugin provides the following things:
+- adds a Gemfile so that bundler will pick up rspec and rspec-rails
+- modifies Redmine's `redmine:plugins:test` task so that all plugins specs run along with test/unit ones (you can restrict to a specific plugin with the "NAME" environment variable, like other redmine plugin test tasks)
+- adds this plugin's `spec/` directory to `$LOAD_PATH` and provides a default `spec_helper` file for your specs ; hence you can just `require "spec_helper"` on top of your spec files if this default one is sufficient for you
+
+Note that if you want to run specs directly with the `rspec` command, and you use the `spec_helper` of this plugin directly, you may have to specify the `-I` option to have the correct load path:
+
+    rspec -Iplugins/redmine_base_rspec/spec  plugins/<your_plugin>/spec
+
 Installation
 ------------
 
