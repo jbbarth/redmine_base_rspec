@@ -15,7 +15,6 @@ First download the source or clone the plugin and put it in the "plugins/" direc
 Then execute:
 
     $ bundle install
-    $ rake redmine:plugins
 
 And finally restart your Redmine instance.
 
