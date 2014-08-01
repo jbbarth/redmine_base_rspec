@@ -1,1 +1,1 @@
-gem "rspec-rails", ">= 2.0.0"
+gem "rspec-rails", "~> 2.14.2"
