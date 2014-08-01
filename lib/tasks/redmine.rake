@@ -18,10 +18,19 @@ namespace :redmine do
 
     desc "Runs the plugins specs."
     RSpec::Core::RakeTask.new :spec => "db:test:prepare" do |t|
+      #current plugin (or all) spec/ directory
       plugin_dir = "plugins/#{ENV["NAME"] || "*"}"
-      spec_dirs = Dir.glob("#{plugin_dir}/spec").join(":")
+      spec_dirs = Dir.glob("#{plugin_dir}/spec")
+      #add our spec/ directory to the path so other plugins can simply
+      #put this on top of their spec:
+      #
+      #   require "spec_helper"
+      #
+      spec_dirs << File.expand_path("../../../spec", __FILE__)
+      #which specs to run
       t.pattern = "#{plugin_dir}/spec/**/*_spec.rb"
-      t.ruby_opts = "-I#{spec_dirs}"
+      #which LOAD_PATH (for spec_helper especially)
+      t.ruby_opts = "-I#{spec_dirs.join(":")}"
     end
   end
 end
