@@ -16,6 +16,7 @@ As of today the plugin provides the following things:
 - adds a Gemfile so that bundler will pick up rspec and rspec-rails
 - modifies Redmine's `redmine:plugins:test` task so that all plugins specs run along with test/unit ones (you can restrict to a specific plugin with the "NAME" environment variable, like other redmine plugin test tasks)
 - adds this plugin's `spec/` directory to `$LOAD_PATH` and provides a default `spec_helper` file for your specs ; hence you can just `require "spec_helper"` on top of your spec files if this default one is sufficient for you
+- enables code coverage with SimpleCov if your environment contains the environment variable "COVERAGE"
 
 Note that if you want to run specs directly with the `rspec` command, and you use the `spec_helper` of this plugin directly, you may have to specify the `-I` option to have the correct load path:
 
