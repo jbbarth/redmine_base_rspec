@@ -20,7 +20,7 @@ require File.expand_path('../../../../config/environment', __FILE__)
 
 #test gems
 require 'rspec/rails'
-require 'rspec/autorun'
+# require 'rspec/autorun'
 require 'rspec/mocks'
 require 'rspec/mocks/standalone'
 
@@ -31,4 +31,5 @@ RSpec.configure do |config|
   config.run_all_when_everything_filtered = true
   config.fixture_path = "#{::Rails.root}/test/fixtures"
   config.use_transactional_fixtures = true
+  config.infer_spec_type_from_file_location!
 end
