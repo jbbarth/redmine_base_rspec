@@ -24,6 +24,12 @@ require 'rspec/rails'
 require 'rspec/mocks'
 require 'rspec/mocks/standalone'
 
+module AssertSelectRoot
+  def document_root_element
+    html_document.root
+  end
+end
+
 #rspec base config
 RSpec.configure do |config|
   config.mock_with :rspec
@@ -32,4 +38,5 @@ RSpec.configure do |config|
   config.fixture_path = "#{::Rails.root}/test/fixtures"
   config.use_transactional_fixtures = true
   config.infer_spec_type_from_file_location!
+  config.include AssertSelectRoot, :type => :request
 end
