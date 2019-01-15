@@ -16,7 +16,7 @@ namespace :redmine do
       Rake::Task["redmine:plugins:test:integration"].invoke
     end
 
-    desc "Runs the plugins specs."
+    desc "Runs the plugins spec."
     RSpec::Core::RakeTask.new :spec => "db:test:prepare" do |t|
       #current plugin (or all) spec/ directory
       plugin_dir = "plugins/#{ENV["NAME"] || "*"}"
@@ -27,7 +27,7 @@ namespace :redmine do
       #   require "spec_helper"
       #
       spec_dirs << File.expand_path("../../../spec", __FILE__)
-      #which specs to run
+      #which spec to run
       t.pattern = "#{plugin_dir}/spec/**/*_spec.rb"
       #which LOAD_PATH (for spec_helper especially)
       t.ruby_opts = "-I#{spec_dirs.join(":")}"
