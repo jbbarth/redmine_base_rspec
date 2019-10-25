@@ -1,7 +1,7 @@
 gem "rspec"
 gem "rspec-core"
 gem "rspec-rails"
-gem "rubocop"
+gem "rubocop", '~> 0.74.0'
 gem "rubocop-rspec"
 
 #for test coverage
