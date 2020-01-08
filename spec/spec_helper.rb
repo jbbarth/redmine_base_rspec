@@ -40,3 +40,19 @@ RSpec.configure do |config|
   config.infer_spec_type_from_file_location!
   config.include AssertSelectRoot, :type => :request
 end
+
+def with_settings(options, &block)
+  saved_settings = options.keys.inject({}) do |h, k|
+    h[k] = case Setting[k]
+           when Symbol, false, true, nil
+             Setting[k]
+           else
+             Setting[k].dup
+           end
+    h
+  end
+  options.each {|k, v| Setting[k] = v}
+  yield
+ensure
+  saved_settings.each {|k, v| Setting[k] = v} if saved_settings
+end
