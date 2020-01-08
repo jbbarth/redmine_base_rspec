@@ -1,8 +1,14 @@
-gem "rspec"
-gem "rspec-core"
-gem "rspec-rails"
-gem "rubocop", '~> 0.74.0'
-gem "rubocop-rspec"
+source 'https://rubygems.org'
+gem 'rspec'
+gem 'rspec-core'
+gem 'rspec-rails'
 
-#for test coverage
+# static code checking tools
+gem 'rubocop', '~> 0.79.0'
+gem 'rubocop-performance'
+gem 'rubocop-rails'
+gem 'rubocop-rake'
+gem 'rubocop-rspec'
+
+# for test coverage
 # gem 'simplecov', '~> 0.9.1', :require => false, :group => :test
