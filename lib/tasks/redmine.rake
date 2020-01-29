@@ -7,7 +7,7 @@ Rake::Task['redmine:plugins:test'].clear
 namespace :redmine do
   namespace :plugins do
     desc 'Runs the plugins tests.'
-    task :test do
+    task test: :environment do
       if !ENV['NAME'] || File.exist?(Rails.root.join("plugins/#{ENV['NAME']}/spec"))
         Rake::Task['redmine:plugins:spec'].invoke
       end

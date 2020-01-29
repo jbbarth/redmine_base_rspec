@@ -5,8 +5,8 @@ if ENV['COVERAGE']
   require 'simplecov'
   SimpleCov.start 'rails' do
     coverage_dir 'tmp/coverage'
-###    require "pry"
-###    binding.pry
+    ###    require "pry"
+    ###    binding.pry
     # exclude core dirs coverage
     add_filter do |file|
       file.filename.include?('/lib/plugins/') ||
@@ -16,7 +16,7 @@ if ENV['COVERAGE']
 end
 
 # load rails/redmine
-require File.expand_path('../../../config/environment', __dir__)
+require_relative '../../../config/environment'
 
 # test gems
 require 'rspec/rails'
@@ -41,18 +41,17 @@ RSpec.configure do |config|
   config.include AssertSelectRoot, type: :request
 end
 
-def with_settings(options, &block)
-  saved_settings = options.keys.inject({}) do |h, k|
+def with_settings(options, &_block)
+  saved_settings = options.keys.each_with_object({}) do |k, h|
     h[k] = case Setting[k]
            when Symbol, false, true, nil
              Setting[k]
            else
              Setting[k].dup
            end
-    h
   end
-  options.each {|k, v| Setting[k] = v}
+  options.each { |k, v| Setting[k] = v }
   yield
 ensure
-  saved_settings.each {|k, v| Setting[k] = v} if saved_settings
+  saved_settings&.each { |k, v| Setting[k] = v }
 end
