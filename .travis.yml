@@ -1,0 +1,53 @@
+language: ruby
+
+dist: xenial
+
+rvm:
+  - 2.4.5
+# - 2.5.3 (only for RM 4.0+)
+
+env:
+  - REDMINE_VER=3.4.7
+
+# See: http://www.redmine.org/projects/redmine/wiki/redmineinstall
+# if there is need to deactivate a combination
+# matrix:
+#  exclude:
+#  - rvm: 2.4.5
+#    env: REDMINE_VER=3.3.9
+
+services:
+  - mysql
+
+before_install:
+  - source .travis/install.sh
+    # rails 4.2.8 requires bundler (< 2.0, >= 1.3.0)
+  - gem install bundler -v '< 2.0'
+
+install:
+  - cd $REDMINE_PATH
+  - export BUNDLE_GEMFILE=$REDMINE_PATH/Gemfile
+  - bundle --version
+  - bundle install --jobs=3 --retry=3 --path=$TRAVIS_BUILD_DIR/vendor/bundle
+  ## http://www.redmine.org/projects/redmine/wiki/redmineinstall
+  # Database schema objects creation
+  - bundle exec rake db:create
+  - bundle exec rake db:migrate
+  # Load database default data set
+  - bundle exec rake redmine:load_default_data REDMINE_LANG=en
+  # Generate secret file
+  - bundle exec rake generate_secret_token
+  # Run all available plugin migrations
+  - bundle exec rake redmine:plugins:migrate
+
+script:
+  # Run tests
+  - bundle exec rspec -fd --fail-fast -Iplugins/$PLUGIN_NAME/spec  plugins/$PLUGIN_NAME/spec
+  # Run linter
+  - cd $REDMINE_PATH/plugins/$PLUGIN_NAME
+  - bundle exec rubocop
+  - cd $REDMINE_PATH
+
+cache:
+  directories:
+  - vendor/bundle
