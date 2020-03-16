@@ -18,7 +18,7 @@ end
 #load rails/redmine
 require File.expand_path('../../../../config/environment', __FILE__)
 
-require File.expand_path('../../test/object_helpers', __FILE__)
+require File.expand_path("#{::Rails.root}/test/object_helpers", __FILE__)
 include ObjectHelpers
 
 #test gems
