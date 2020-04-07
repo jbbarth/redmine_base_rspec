@@ -1,4 +1,5 @@
 source 'https://rubygems.org'
+gem 'erb_lint', require: false
 gem 'rspec'
 gem 'rspec-core'
 gem 'rspec-rails'
