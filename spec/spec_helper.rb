@@ -42,6 +42,9 @@ RSpec.configure do |config|
   config.use_transactional_fixtures = true
   config.infer_spec_type_from_file_location!
   config.include AssertSelectRoot, :type => :request
+  config.before(:each, type: :system) do
+    driven_by :selenium, using: :chrome, options: { args: ["headless", "no-sandbox", "disable-gpu"] }
+  end
 end
 
 def with_settings(options, &block)
