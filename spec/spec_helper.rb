@@ -10,7 +10,7 @@ if ENV['COVERAGE']
     # exclude core dirs coverage
     add_filter do |file|
       file.filename.include?('/lib/plugins/') ||
-        !file.filename.include?('/plugins/')
+        file.filename.exclude?('/plugins/')
     end
   end
 end
