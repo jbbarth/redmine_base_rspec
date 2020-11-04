@@ -5,9 +5,7 @@ gem 'rspec-core'
 gem 'rspec-rails'
 
 # static code checking tools
-gem 'rubocop', '~> 0.91.0'
-#  undefined method `captures' for #<StringScanner 1/53 "{" @ "(send..."> in 0.7.x
-gem 'rubocop-ast', '<= 0.6.0'
+gem 'rubocop', '~> 0.93.0'
 gem 'rubocop-performance'
 gem 'rubocop-rails'
 gem 'rubocop-rake'
