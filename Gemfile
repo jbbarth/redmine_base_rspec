@@ -5,7 +5,7 @@ gem 'rspec-core'
 gem 'rspec-rails'
 
 # static code checking tools
-gem 'rubocop', '~> 1.3.0'
+gem 'rubocop', '~> 1.6.0'
 gem 'rubocop-performance'
 gem 'rubocop-rails'
 gem 'rubocop-rake'
