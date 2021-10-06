@@ -98,3 +98,7 @@ end
 def mail_body(mail)
   mail.parts.first.body.encoded
 end
+
+def uploaded_test_file(name, mime)
+  fixture_file_upload("files/#{name}", mime, true)
+end
