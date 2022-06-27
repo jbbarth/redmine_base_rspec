@@ -44,7 +44,7 @@ RSpec.configure do |config|
   config.include AssertSelectRoot, :type => :request
   config.before(:each, type: :system) do
     options = {}
-    options[:desired_capabilities] = Selenium::WebDriver::Remote::Capabilities.chrome(
+    options[:capabilities] = Selenium::WebDriver::Remote::Capabilities.chrome(
       'goog:chromeOptions' => {
         'args' => ["headless", "no-sandbox", "disable-gpu"]
       }
