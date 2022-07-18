@@ -109,5 +109,5 @@ def mail_body(mail)
 end
 
 def uploaded_test_file(name, mime)
-  fixture_file_upload("files/#{name}", mime, true)
+  fixture_file_upload("#{::Rails.root}/test/fixtures/files/#{name}", mime, true)
 end
