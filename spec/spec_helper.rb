@@ -1,27 +1,27 @@
 ENV['RAILS_ENV'] ||= 'test'
 
-#load simplecov
+# load simplecov
 if ENV['COVERAGE']
   require 'simplecov'
   SimpleCov.start 'rails' do
     coverage_dir 'tmp/coverage'
-###    require "pry"
-###    binding.pry
-    #exclude core dirs coverage
+    ###    require "pry"
+    ###    binding.pry
+    # exclude core dirs coverage
     add_filter do |file|
-      file.filename.include?('/lib/plugins/') || 
+      file.filename.include?('/lib/plugins/') ||
         !file.filename.include?('/plugins/')
     end
   end
 end
 
-#load rails/redmine
+# load rails/redmine
 require File.expand_path('../../../../config/environment', __FILE__)
 
 require File.expand_path("#{::Rails.root}/test/object_helpers", __FILE__)
 include ObjectHelpers
 
-#test gems
+# test gems
 require 'rspec/rails'
 # require 'rspec/autorun'
 require 'rspec/mocks'
@@ -33,7 +33,7 @@ module AssertSelectRoot
   end
 end
 
-#rspec base config
+# rspec base config
 RSpec.configure do |config|
   config.mock_with :rspec
   config.filter_run :focus => true
@@ -45,9 +45,8 @@ RSpec.configure do |config|
   config.before(:each, type: :system) do
     driven_by(
       :selenium,
-      using: :chrome,
-      screen_size: [1024, 900],
-      options: {args: %w[headless disable-gpu no-sandbox]}
+      using: :headless_chrome,
+      screen_size: [1024, 900]
     )
   end
 end
@@ -62,10 +61,10 @@ def with_settings(options, &block)
            end
     h
   end
-  options.each {|k, v| Setting[k] = v}
+  options.each { |k, v| Setting[k] = v }
   yield
 ensure
-  saved_settings.each {|k, v| Setting[k] = v} if saved_settings
+  saved_settings.each { |k, v| Setting[k] = v } if saved_settings
 end
 
 def log_user(login, password)
@@ -84,7 +83,7 @@ def log_user(login, password)
   expect(current_path).to eq '/my/page'
 end
 
-def assert_mail_body_match(expected, mail, message=nil)
+def assert_mail_body_match(expected, mail, message = nil)
   if expected.is_a?(String)
     expect(mail_body(mail)).to include(expected)
   else
@@ -92,7 +91,7 @@ def assert_mail_body_match(expected, mail, message=nil)
   end
 end
 
-def assert_mail_body_no_match(expected, mail, message=nil)
+def assert_mail_body_no_match(expected, mail, message = nil)
   if expected.is_a?(String)
     expect(mail_body(mail)).to_not include expected
   else
