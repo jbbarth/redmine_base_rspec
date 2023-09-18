@@ -49,6 +49,15 @@ RSpec.configure do |config|
       screen_size: [1024, 900]
     )
   end
+  if Redmine::VERSION::MAJOR >= 5
+    Rails.application.load_tasks
+    config.before(:suite) do
+      # Run Zeitwerk check before the suite runs
+      expect {
+        Rake::Task['zeitwerk:check'].invoke
+      }.to_not raise_error
+    end
+  end
 end
 
 def with_settings(options, &block)
