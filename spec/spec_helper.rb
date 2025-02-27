@@ -39,6 +39,7 @@ RSpec.configure do |config|
   config.filter_run :focus => true
   config.run_all_when_everything_filtered = true
   config.fixture_path = "#{::Rails.root}/test/fixtures"
+  config.fixture_paths = config.fixture_path
   config.use_transactional_fixtures = true
   config.infer_spec_type_from_file_location!
   config.include AssertSelectRoot, :type => :request
@@ -76,9 +77,13 @@ ensure
   saved_settings.each { |k, v| Setting[k] = v } if saved_settings
 end
 
+
 def log_user(login, password)
+  return if User.current.logged? && User.current.login == login
+  log_out if User.current.logged?
+
   visit '/my/page'
-  expect(current_path).to eq '/login'
+  expect(page).to have_current_path(%r{^/login}, wait: true)
 
   if Redmine::Plugin.installed?(:redmine_scn)
     click_on("ou s'authentifier par login / mot de passe")
@@ -90,6 +95,13 @@ def log_user(login, password)
     find('input[name=login]').click
   end
   expect(page).to have_current_path('/my/page', wait: true)
+end
+
+def log_out
+  post '/logout'
+  assert_redirected_to '/'
+  follow_redirect!
+  assert_response :success
 end
 
 def assert_mail_body_match(expected, mail, message = nil)
