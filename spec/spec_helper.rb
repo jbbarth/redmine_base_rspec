@@ -39,7 +39,7 @@ RSpec.configure do |config|
   config.filter_run :focus => true
   config.run_all_when_everything_filtered = true
   config.fixture_path = "#{::Rails.root}/test/fixtures"
-  config.fixture_paths = config.fixture_path
+  config.fixture_paths = config.fixture_path if Redmine::VERSION::MAJOR >= 6
   config.use_transactional_fixtures = true
   config.infer_spec_type_from_file_location!
   config.include AssertSelectRoot, :type => :request

@@ -9,30 +9,34 @@ end
 
 # Specific patch for Redmine 6.0.1
 # Patch core helper method to temporary prevent a bug with GitHub Action Workflows on Redmine 6.0
-module BaseRspec
-  module IconsHelperPatch
-    def principal_icon(principal, **options)
+if Redmine::VERSION::MAJOR >= 6
 
-      if principal.is_a?(String)
-        puts "Error in principal_icon: First argument has to be a Principal, was the String #{principal.inspect}"
-        return nil
+  module BaseRspec
+    module IconsHelperPatch
+      def principal_icon(principal, **options)
+
+        ## Patched code
+        if principal.is_a?(String)
+          puts "Error in principal_icon: First argument has to be a Principal, was the String #{principal.inspect}"
+          return nil
+        end
+        ## End of patched code
+
+        raise ArgumentError, "First argument has to be a Principal, was #{principal.inspect}" unless principal.is_a?(Principal)
+
+        principal_class = principal.class.name.downcase
+        sprite_icon('group', **options) if ['groupanonymous', 'groupnonmember', 'group'].include?(principal_class)
       end
-
-      raise ArgumentError, "First argument has to be a Principal, was #{principal.inspect}" unless principal.is_a?(Principal)
-
-      principal_class = principal.class.name.downcase
-      sprite_icon('group', **options) if ['groupanonymous', 'groupnonmember', 'group'].include?(principal_class)
     end
   end
-end
 
-module Hooks
-  class ModelHook < Redmine::Hook::Listener
-    def after_plugins_loaded(_context = {})
-      if Redmine::VERSION::MAJOR >= 6
+  module Hooks
+    class ModelHook < Redmine::Hook::Listener
+      def after_plugins_loaded(_context = {})
         IconsHelper.prepend BaseRspec::IconsHelperPatch
         ActionView::Base.prepend IconsHelper
       end
     end
   end
+
 end
