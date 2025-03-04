@@ -81,10 +81,13 @@ end
 
 def log_user(login, password)
   return if User.current.logged? && User.current.login == login
-  log_out if User.current.logged?
 
-  visit '/my/page'
-  expect(page).to have_current_path(%r{^/login}, wait: true)
+  visit '/login'
+  if current_path != '/login'
+    click_on('Sign out') if page.has_link?('Sign out')
+    visit '/login'
+    expect(page).to have_current_path('/login', wait: true)
+  end
 
   if Redmine::Plugin.installed?(:redmine_scn)
     click_on("ou s'authentifier par login / mot de passe")
