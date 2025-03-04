@@ -20,6 +20,7 @@ require File.expand_path('../../../../config/environment', __FILE__)
 
 require File.expand_path("#{::Rails.root}/test/object_helpers", __FILE__)
 include ObjectHelpers
+include Redmine::QuoteReply::Helper if Redmine::VERSION::MAJOR >= 6
 
 # test gems
 require 'rspec/rails'
