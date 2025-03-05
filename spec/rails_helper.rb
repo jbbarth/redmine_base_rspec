@@ -27,7 +27,11 @@ include ObjectHelpers
 
 RSpec.configure do |config|
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
-  config.fixture_paths = "#{::Rails.root}/test/fixtures"
+  if Redmine::VERSION::MAJOR >= 6
+    config.fixture_paths = "#{::Rails.root}/test/fixtures"
+  else
+    config.fixture_path = "#{::Rails.root}/test/fixtures"
+  end
 
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
