@@ -53,6 +53,7 @@ RSpec.configure do |config|
       using: :headless_chrome,
       screen_size: [1024, 900]
     )
+    Capybara.default_max_wait_time = 10
   end
   if Redmine::VERSION::MAJOR >= 5
     Rails.application.load_tasks
@@ -81,7 +82,6 @@ ensure
   saved_settings.each { |k, v| Setting[k] = v } if saved_settings
 end
 
-
 def log_user(login, password)
   return if User.current.logged? && User.current.login == login
 
@@ -92,7 +92,9 @@ def log_user(login, password)
     expect(page).to have_current_path('/login', wait: true)
   end
 
-  if Redmine::Plugin.installed?(:redmine_scn)
+  if Redmine::Plugin.installed?(:redmine_omniauth_cas) &&
+     Setting["plugin_redmine_omniauth_cas"]["enabled"] == 'true' &&
+     Setting["plugin_redmine_omniauth_cas"]["cas_server"].present?
     click_on("ou s'authentifier par login / mot de passe")
   end
 
