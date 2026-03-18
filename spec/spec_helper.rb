@@ -98,6 +98,11 @@ def log_user(login, password)
     click_on("ou s'authentifier par login / mot de passe")
   end
 
+  if Redmine::Plugin.installed?(:redmine_omniauth_oidc) &&
+     RedmineOmniauthOidc.enabled? && RedmineOmniauthOidc.oidc_issuer_url.present?
+    click_on("ou s'authentifier par login / mot de passe")
+  end
+
   within('#login-form form') do
     fill_in 'username', with: login
     fill_in 'password', with: password
