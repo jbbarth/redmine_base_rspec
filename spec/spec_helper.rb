@@ -47,6 +47,10 @@ RSpec.configure do |config|
   config.use_transactional_fixtures = true
   config.infer_spec_type_from_file_location!
   config.include AssertSelectRoot, :type => :request
+  # Disable sudo mode in tests, mirroring Redmine core's test_helper
+  config.before(:each) do
+    allow(Redmine::SudoMode).to receive(:enabled?).and_return(false)
+  end
   config.before(:each, type: :system) do
     driven_by(
       :selenium,
