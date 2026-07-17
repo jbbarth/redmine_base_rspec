@@ -16,7 +16,13 @@ if ENV['COVERAGE']
 end
 
 # load rails/redmine
-require File.expand_path('../../../../config/environment', __FILE__)
+# The Redmine root is looked up from the working directory rather than from __FILE__,
+# which resolves outside of the Redmine directory when the plugin is symlinked
+require 'pathname'
+redmine_root = Pathname(Dir.pwd).ascend.find { |dir| dir.join('config/environment.rb').exist? }
+raise "Unable to find a Redmine root from #{Dir.pwd}: run the specs from the Redmine directory" unless redmine_root
+
+require redmine_root.join('config/environment').to_s
 
 require File.expand_path("#{::Rails.root}/test/object_helpers", __FILE__)
 include ObjectHelpers
@@ -91,7 +97,7 @@ def log_user(login, password)
 
   visit '/login'
   if current_path != '/login'
-    click_on('Sign out') if page.has_link?('Sign out')
+    page.reset_session!
     visit '/login'
     expect(page).to have_current_path('/login', wait: true)
   end
